@@ -42,8 +42,13 @@ local function onMendingEvent(eventParams)
     --We only want the spell to continue if it's the right type of object
     if tes3ObjectType == tes3.objectType.armor or tes3ObjectType == tes3.objectType.weapon then
         --Load up the values relevant to our interests
-        local targetCurrentCondition = target.itemData.condition
         local targetMaximumCondition = target.object.maxCondition
+        local targetCurrentCondition
+        if not target.itemData then
+            targetCurrentCondition = targetMaximumCondition
+        else
+            targetCurrentCondition = target.itemData.condition
+        end
         local itemValue = target.object.value
 
         --Let's do math to figure out how much value we target for a full repair
@@ -64,7 +69,9 @@ local function onMendingEvent(eventParams)
         local newConditionRating = math.min(targetConditionLimit, math.max(1, (targetConditionLimit - targetCurrentCondition) * repairMultiplier) + targetCurrentCondition)
 
         --Inform the player of their results
-        if targetCurrentCondition == targetMaximumCondition then
+        if targetCurrentCondition >= newConditionRating then
+            tes3.messageBox("Your skills are not sufficient to repair the "..target.object.name.." any further.")
+        elseif targetCurrentCondition == targetMaximumCondition then
             tes3.messageBox("The "..target.object.name.."'s condition cannot be improved any further.")
         elseif newConditionRating == targetCurrentCondition then
             tes3.messageBox("Mending the "..target.object.name.." any further is beyond your ability.")
@@ -77,8 +84,10 @@ local function onMendingEvent(eventParams)
         end
 
         --Actually apply the change
-        target.itemData.condition = newConditionRating
-        tes3ui.refreshTooltip()
+        if newConditionRating > targetCurrentCondition then
+            target.itemData.condition = newConditionRating
+            tes3ui.refreshTooltip()
+        end
 
         --Generate a particle system because this is ~*~magical~*~
         local vfx_glow = tes3.createVisualEffect({ reference = target, lifespan = 1.2, magicEffectId = tes3.effect.mend })
