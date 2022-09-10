@@ -62,47 +62,31 @@ local function onScourTick(eventParams)
         spellTarget.mobile.fatigue.current = spellTarget.mobile.fatigue.current - finalDmg
 
         --Inform the player of their nasty, nasty deeds
-        if spellTarget.mobile == tes3.mobilePlayer then
-            if cdCount > 0 and bdCount > 0 then
-                if cdCount > 1 and bdCount > 1 then
-                    tes3.messageBox("Scoured "..cdCount.." common diseases and "..bdCount.." blight diseases.")
-                elseif cdCount > 1 then
-                    tes3.messageBox("Scoured "..cdCount.." common diseases and a blight disease.")
-                elseif bdCount > 1 then
-                    tes3.messageBox("Scoured a common disease and "..bdCount.." blight diseases.")
-                else
-                    tes3.messageBox("Scoured a common disease and a blight disease.")
-                end
-            elseif cdCount > 1 then
-                tes3.messageBox("Scoured "..cdCount.." common diseases.")
-            elseif cdCount > 0 then
-                tes3.messageBox("Scoured a common disease.")
-            elseif cdCount > 1 then
-                tes3.messageBox("Scoured "..bdCount.." blight diseases.")
-            elseif bdCount > 0 then
-                tes3.messageBox("Scoured a blight disease.")
-            end
-        else
-            if cdCount > 0 and bdCount > 0 then
-                if cdCount > 1 and bdCount > 1 then
-                    tes3.messageBox("Scoured "..cdCount.." common diseases and "..bdCount.." blight diseases from "..spellTarget.baseObject.name..".")
-                elseif cdCount > 1 then
-                    tes3.messageBox("Scoured "..cdCount.." common diseases and a blight disease from "..spellTarget.baseObject.name..".")
-                elseif bdCount > 1 then
-                    tes3.messageBox("Scoured a common disease and "..bdCount.." blight diseases from "..spellTarget.baseObject.name..".")
-                else
-                    tes3.messageBox("Scoured a common disease and a blight disease from "..spellTarget.baseObject.name..".")
-                end
-            elseif cdCount > 1 then
-                tes3.messageBox("Scoured "..cdCount.." common diseases from "..spellTarget.baseObject.name..".")
-            elseif cdCount > 0 then
-                tes3.messageBox("Scoured a common disease from "..spellTarget.baseObject.name..".")
-            elseif cdCount > 1 then
-                tes3.messageBox("Scoured "..bdCount.." blight diseases from "..spellTarget.baseObject.name..".")
-            elseif bdCount > 0 then
-                tes3.messageBox("Scoured a blight disease from "..spellTarget.baseObject.name..".")
-            end
+        local message = "Scoured "
+        
+        if cdCount > 1 then
+            message = message..cdCount.." common diseases"
+        elseif cdCount > 0 then
+            message = message.."a common disease"
         end
+
+        if cdCount > 0 and bdCount > 0 then
+            message = message.." and "
+        end
+
+        if bdCount > 1 then
+            message = message..bdCount.." blight diseases"
+        elseif bdCount > 0 then
+            message = message.."a blight disease"
+        end
+
+        if spellTarget.mobile == tes3.mobilePlayer then
+            message = message.."."
+        else
+            message = message.." from "..spellTarget.baseObject.name.."."
+        end
+
+        tes3.messageBox(message)
     end
 
     eventParams:trigger({
