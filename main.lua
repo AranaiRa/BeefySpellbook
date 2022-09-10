@@ -4,7 +4,11 @@
     Version: 1.0
 ]]--
 
+--Alteration
 require("BeefySpellbook.effects.mendEffect")
+
+--Mysticism
+require("BeefySpellbook.effects.chartEffect")
 
 local framework = include("OperatorJack.MagickaExpanded.magickaExpanded")
 
