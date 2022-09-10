@@ -6,7 +6,7 @@ tes3.claimSpellEffectId("mend", spellIDNumber)
 --[[
     Helper functions
 ]]--
-local function getMendingEffectInStack (effects)
+local function getMendEffectInStack (effects)
     for i=1,8 do
         local effect = effects[i]
         if (effect ~= nil) then
@@ -55,7 +55,7 @@ local function onMendingEvent(eventParams)
         local cSkill = tes3.mobilePlayer.alteration.current
         local cWIL = tes3.mobilePlayer.willpower.current
         local cINT = tes3.mobilePlayer.intelligence.current
-        local cMAG = framework.functions.getCalculatedMagnitudeFromEffect(getMendingEffectInStack(eventParams.source.effects))
+        local cMAG = framework.functions.getCalculatedMagnitudeFromEffect(getMendEffectInStack(eventParams.source.effects))
         local valueTheshold = math.ceil(((math.min(100,cMAG) / 50.0) * (math.min(100,cMAG) / 50.0)) * (((cINT*1.25) * (cINT*1.25)) + ((cWIL*0.75) * (cWIL*0.75))))
 
         --Adjust the repair multiplier based on how far over the theshold the item's value actually is
