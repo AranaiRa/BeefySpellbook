@@ -92,6 +92,8 @@ local function onMendingEvent(eventParams)
         --Generate a particle system because this is ~*~magical~*~
         local vfx_glow = tes3.createVisualEffect({ reference = target, lifespan = 1.2, magicEffectId = tes3.effect.mend })
         local vfx_particles = tes3.createVisualEffect({ object = "VFX_AlterationHit", reference = target, repeatCount = 1, scale = 0.0025, verticalOffset = -75 })
+    else
+        tes3.messageBox("You can only Mend an unattended object.")
     end
 end
 event.register("spellCasted", onMendingEvent)
