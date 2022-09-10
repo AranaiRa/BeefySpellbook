@@ -7,6 +7,9 @@
 --Alteration
 require("BeefySpellbook.effects.mendEffect")
 
+--Destruction
+require("BeefySpellbook.effects.scourEffect")
+
 --Mysticism
 require("BeefySpellbook.effects.chartEffect")
 
