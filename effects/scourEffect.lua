@@ -62,24 +62,46 @@ local function onScourTick(eventParams)
         spellTarget.mobile.fatigue.current = spellTarget.mobile.fatigue.current - finalDmg
 
         --Inform the player of their nasty, nasty deeds
-        if cdCount > 0 and bdCount > 0 then
-            if cdCount > 1 and bdCount > 1 then
-                tes3.messageBox("Scourged "..cdCount.." common diseases and "..bdCount.." blight diseases from "..spellTarget.baseObject.id..".")
+        if spellTarget.mobile == tes3.mobilePlayer then
+            if cdCount > 0 and bdCount > 0 then
+                if cdCount > 1 and bdCount > 1 then
+                    tes3.messageBox("Scoured "..cdCount.." common diseases and "..bdCount.." blight diseases.")
+                elseif cdCount > 1 then
+                    tes3.messageBox("Scoured "..cdCount.." common diseases and a blight disease.")
+                elseif bdCount > 1 then
+                    tes3.messageBox("Scoured a common disease and "..bdCount.." blight diseases.")
+                else
+                    tes3.messageBox("Scoured a common disease and a blight disease.")
+                end
             elseif cdCount > 1 then
-                tes3.messageBox("Scourged "..cdCount.." common diseases and a blight disease from "..spellTarget.baseObject.id..".")
-            elseif bdCount > 1 then
-                tes3.messageBox("Scourged a common disease and "..bdCount.." blight diseases from "..spellTarget.baseObject.id..".")
-            else
-                tes3.messageBox("Scourged a common disease and a blight disease from "..spellTarget.baseObject.id..".")
+                tes3.messageBox("Scoured "..cdCount.." common diseases.")
+            elseif cdCount > 0 then
+                tes3.messageBox("Scoured a common disease.")
+            elseif cdCount > 1 then
+                tes3.messageBox("Scoured "..bdCount.." blight diseases.")
+            elseif bdCount > 0 then
+                tes3.messageBox("Scoured a blight disease.")
             end
-        elseif cdCount > 1 then
-            tes3.messageBox("Scourged "..cdCount.." common diseases from "..spellTarget.baseObject.id..".")
-        elseif cdCount > 0 then
-            tes3.messageBox("Scourged a common disease from "..spellTarget.baseObject.id..".")
-        elseif cdCount > 1 then
-            tes3.messageBox("Scourged "..bdCount.." blight diseases from "..spellTarget.baseObject.id..".")
-        elseif bdCount > 0 then
-            tes3.messageBox("Scourged a blight disease from "..spellTarget.baseObject.id..".")
+        else
+            if cdCount > 0 and bdCount > 0 then
+                if cdCount > 1 and bdCount > 1 then
+                    tes3.messageBox("Scoured "..cdCount.." common diseases and "..bdCount.." blight diseases from "..spellTarget.baseObject.name..".")
+                elseif cdCount > 1 then
+                    tes3.messageBox("Scoured "..cdCount.." common diseases and a blight disease from "..spellTarget.baseObject.name..".")
+                elseif bdCount > 1 then
+                    tes3.messageBox("Scoured a common disease and "..bdCount.." blight diseases from "..spellTarget.baseObject.name..".")
+                else
+                    tes3.messageBox("Scoured a common disease and a blight disease from "..spellTarget.baseObject.name..".")
+                end
+            elseif cdCount > 1 then
+                tes3.messageBox("Scoured "..cdCount.." common diseases from "..spellTarget.baseObject.name..".")
+            elseif cdCount > 0 then
+                tes3.messageBox("Scoured a common disease from "..spellTarget.baseObject.name..".")
+            elseif cdCount > 1 then
+                tes3.messageBox("Scoured "..bdCount.." blight diseases from "..spellTarget.baseObject.name..".")
+            elseif bdCount > 0 then
+                tes3.messageBox("Scoured a blight disease from "..spellTarget.baseObject.name..".")
+            end
         end
     end
 
@@ -117,6 +139,7 @@ local function addScourEffect()
         canCastTarget = true,
         canCastTouch = true,
         hasNoDuration = true,
+        isHarmful = true,
         
 
         -- Graphics / Sounds
