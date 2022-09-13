@@ -58,8 +58,15 @@ local function onScourTick(eventParams)
         tes3.updateMagicGUI({reference = spellTarget})
 
         --Damage the victim's health and fatigue
-        spellTarget.mobile.health.current = spellTarget.mobile.health.current - finalDmg
-        spellTarget.mobile.fatigue.current = spellTarget.mobile.fatigue.current - finalDmg
+        spellTarget.mobile:applyDamage({
+            damage = finalDmg,
+            applyArmor = false
+        })
+        tes3.modStatistic({
+            reference = spellTarget.mobile.reference,
+            name = "fatigue",
+            current = (-1 * finalDmg)
+        })
 
         --Inform the player of their nasty, nasty deeds
         local message = "Scoured "
