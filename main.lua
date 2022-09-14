@@ -12,6 +12,7 @@ require("BeefySpellbook.effects.scourEffect")
 
 --Mysticism
 require("BeefySpellbook.effects.chartEffect")
+require("BeefySpellbook.effects.reserveEffect")
 
 local framework = include("OperatorJack.MagickaExpanded.magickaExpanded")
 
