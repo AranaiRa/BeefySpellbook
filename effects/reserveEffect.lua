@@ -199,39 +199,41 @@ end
 event.register("MagickaExpanded:Register", registerSpells)
 
 --debug
-event.register(tes3.event.equip, function(eventParams)
-    eventParams.block = true
-    local thisItem = eventParams.item
+event.register(tes3.event.equip, function(e)
+    local id = e.item.id:lower()
 
-    if thisItem ~= nil then
-        if thisItem.id == "bsb_reserved_magicka_diamond" or
-        thisItem.id == "bsb_reserved_magicka_ruby" or
-        thisItem.id == "bsb_reserved_magicka_emerald" or
-        thisItem.id == "bsb_reserved_magicka_pearl" then
+    if id == "bsb_reserved_magicka_diamond" 
+        or id == "bsb_reserved_magicka_ruby" 
+        or id == "bsb_reserved_magicka_emerald" 
+        or id == "bsb_reserved_magicka_pearl" 
+    then
+        local magicka = e.itemData.data.bsbReservedMagicka
+        tes3.modStatistic({
+            reference = tes3.mobilePlayer.reference,
+            name = "magicka",
+            current = magicka,
+            limitToBase = true
+        })
 
-            local magicka = eventParams.itemData.data.bsbReservedMagicka
-            tes3.modStatistic({
-                reference = tes3.mobilePlayer.reference,
-                name = "magicka",
-                current = magicka,
-                limitToBase = true
-            })
+        tes3.messageBox("You drew "..magicka.." magicka from the jewel.")
 
-            local newItemID = getStandardGemID(thisItem.id)
+        timer.frame.delayOneFrame(function()
+            local newItemID = getStandardGemID(id)
             tes3.addItem({
-                reference = tes3.mobilePlayer.reference,
+                reference = tes3.player,
                 item = newItemID,
                 count = 1,
                 playSound = true
             })
+            
             tes3.removeItem({
-                reference = tes3.mobilePlayer.reference,
-                item = thisItem.id,
-                itemData = eventParams.itemData
+                reference = tes3.player,
+                item = e.item,
+                itemData = e.itemData
             })
-
-            tes3.messageBox("You drew "..magicka.." magicka from the jewel.")
-        end
+        end)
+        
+        return false
     end
 end
 )
