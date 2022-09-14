@@ -190,7 +190,7 @@ local function registerSpells()
 
     framework.spells.createBasicSpell({
         id = "bsb_reserve_master",
-        name = "Sotha's Infusion",
+        name = "Sotha's Contingency",
         effect = tes3.effect.reserve,
         range = tes3.effectRange.self,
         min = 70,
